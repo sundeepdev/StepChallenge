@@ -18,7 +18,7 @@ class UserUseCase @Inject constructor(
         return userRepository.updateUser(id, updatedUser)
     }
 
-    fun getUsers(): Flow<List<User>> {
+    fun getUsers(): Flow<Result<List<User>>> {
         return userRepository.getUsers()
     }
 }

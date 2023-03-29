@@ -22,10 +22,9 @@ class HomeActivity: ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val homeViewModel:HomeViewModel = viewModel()
-                    HomeScreen(homeViewModel)
+                    HomeScreen(homeViewModel = homeViewModel)
                 }
             }
         }
     }
 }
-

@@ -9,7 +9,8 @@ class StepsUseCase @Inject constructor(
     private val stepsDataRepository: StepsDataRepository
 ) {
 
-    fun getStepsData(forUserWithId: String): Flow<List<StepData>> {
+    fun getStepsData(): Flow<Result<List<StepData>>> {
+        val forUserWithId = "currentUser"
         return stepsDataRepository.getStepsData(forUserWithId)
     }
 }

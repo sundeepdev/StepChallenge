@@ -5,6 +5,7 @@ import com.publicissapient.stepchallenge.data.source.network.apis.GoogleSheetsAp
 import com.publicissapient.stepchallenge.data.source.network.dto.SheetsUpdateRequest
 import com.publicissapient.stepchallenge.domain.entity.StepData
 import com.publicissapient.stepchallenge.domain.repository.StepsDataRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.*
@@ -30,25 +31,30 @@ class StepsDataRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getStepsData(forUserWithId: String): Flow<List<StepData>> {
+    override fun getStepsData(forUserWithId: String): Flow<Result<List<StepData>>> {
         val apiKey: String = BuildConfig.GOOGLE_SHEET_API_KEY
         val sheetId: String = BuildConfig.GOOGLE_SHEET_ID
 
-        return flow<List<StepData>> {
+        return flow<Result<List<StepData>>> {
             // ToDo: Need to update code to send and receive request.
-//            apiService.getSheetData(
+            try {
+                //            apiService.getSheetData(
 //                spreadsheetId = sheetId,
 //                sheetRange = "A1:B1",
 //                apiKey = apiKey
 //            )
+                delay(1000)
+                val steps = listOf<StepData>(
+                    StepData(1000, Date()),
+                    StepData(1000, Date()),
+                    StepData(1000, Date())
 
-            val steps = listOf<StepData>(
-                StepData(1000, Date()),
-                StepData(1000, Date()),
-                StepData(1000, Date())
+                )
+                emit(Result.success(steps))
+            } catch (e: Exception) {
+                emit(Result.failure(e))
+            }
 
-            )
-            emit(steps)
         }
     }
 }

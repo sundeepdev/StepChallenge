@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     fun addUser(user: User): Flow<Boolean>
     fun updateUser(id: String, updatedUser: User): Flow<Boolean>
-    fun getUsers(): Flow<List<User>>
+    fun getUsers(): Flow<Result<List<User>>>
 }

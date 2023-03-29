@@ -1,112 +1,71 @@
 package com.publicissapient.stepchallenge.ui.home
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.publicissapient.stepchallenge.ui.steps.StepsList
+import com.publicissapient.stepchallenge.R
 import com.publicissapient.stepchallenge.ui.theme.OneOnOneTheme
-import com.publicissapient.stepchallenge.ui.users.UserList
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel) {
+fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     var selectedTab = when(uiState) {
-        is HomeViewUiState.UserListScreen -> HomeViewTab.USERS_LIST_TAB
-        is HomeViewUiState.StepsListScreen -> HomeViewTab.STEPS_LIST_TAB
-        is HomeViewUiState.UserProfileScreen -> HomeViewTab.PROFILE_TAB
+        is HomeViewUiState.UserListScreen -> HomeViewTabType.USERS_LIST_TAB
+        is HomeViewUiState.StepsListScreen -> HomeViewTabType.STEPS_LIST_TAB
+        is HomeViewUiState.UserProfileScreen -> HomeViewTabType.PROFILE_TAB
     }
-    HomeScreen( uiState = uiState, selectedTab = selectedTab, homeViewModel::tabClicked)
+    HomeScreen(modifier, uiState = uiState, selectedTab = selectedTab, homeViewModel::tabClicked)
 }
 
 @Composable
 fun HomeScreen(
+    modifier: Modifier = Modifier,
     uiState: HomeViewUiState,
-    selectedTab: HomeViewTab,
-    tabClicked: (HomeViewTab) -> Unit
+    selectedTab: HomeViewTabType,
+    tabClicked: (HomeViewTabType) -> Unit,
 ) {
     val navController = rememberNavController()
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Step Challenge") })
+            TopAppBar(title = { Text(stringResource(R.string.home_screen_title)) })
         },
         bottomBar = {
-            TabBar(selectedTab, navController, tabClicked)
+            HomeScreenTabBarNavigation(selectedTab, navController, tabClicked)
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* ... */ }) {
-                /* FAB content */
+            FloatingActionButton(
+                onClick = {
+                    //OnClick Method
+                },
+                backgroundColor = MaterialTheme.colors.secondary,
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = stringResource(R.string.home_screen_floating_button_desc),
+                    tint = Color.White,
+                )
             }
         }
     ) { padding ->
-        HomeScreenContent(padding, navController, uiState)
-    }
-}
-
-@Composable
-private fun HomeScreenContent(
-    padding: PaddingValues,
-    navController: NavHostController,
-    uiState: HomeViewUiState
-) {
-    Box(modifier = Modifier.padding(padding)) {
-        NavHost(navController, startDestination = HomeViewTab.USERS_LIST_TAB.tabData.title) {
-            composable(HomeViewTab.USERS_LIST_TAB.tabData.title) {
-                // Display the list of users
-                if (uiState is HomeViewUiState.UserListScreen) {
-                    UserList(uiState.userListViewModel)
-                } else {
-
-                }
-            }
-            composable(HomeViewTab.STEPS_LIST_TAB.tabData.title) {
-                // Display the list of steps
-                if (uiState is HomeViewUiState.StepsListScreen) {
-                    StepsList(uiState.stepsListViewModel)
-                }
-            }
-            composable(HomeViewTab.PROFILE_TAB.tabData.title) {
-
-                // Display the user profile
-                //UserProfile()
-            }
-        }
-    }
-}
-
-@Composable
-private fun TabBar(
-    selectedTab: HomeViewTab,
-    navController: NavHostController,
-    tabClicked: (HomeViewTab) -> Unit
-) {
-    BottomNavigation {
-        HomeViewTab.values().forEach { tab ->
-            BottomNavigationItem(
-                selected = selectedTab == tab,
-                onClick = {
-                    navController.navigate(tab.tabData.title) {
-                        launchSingleTop = true
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
-                        }
-                        restoreState = true
-                    }
-                    tabClicked(tab)
-                },
-                label = { Text(tab.tabData.title) },
-                icon = { Icon(tab.tabData.icon, contentDescription = null) }
-            )
-        }
+        HomeScreenContent(
+            modifier.padding(padding),
+            navController,
+            uiState
+        )
     }
 }
 
@@ -114,6 +73,12 @@ private fun TabBar(
 @Composable
 fun DefaultPreview() {
     OneOnOneTheme {
-//        HomeScreen()
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background
+        ) {
+            val homeViewModel:HomeViewModel = viewModel()
+            HomeScreen(homeViewModel = homeViewModel)
+        }
     }
 }

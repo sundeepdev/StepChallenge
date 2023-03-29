@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Step Challenge</string>
+    <string name="home_screen_title">Step Challenge</string>
+    <string name="home_screen_floating_button_desc">Add</string>
+    <string name="default_error_message_with_retry">An unknown error occurred. Please try again.</string>
+    <string name="user_list_label_for_admin_user">Admin</string>
 </resources>
