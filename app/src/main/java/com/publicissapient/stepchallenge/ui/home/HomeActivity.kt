@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.publicissapient.stepchallenge.ui.theme.OneOnOneTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,8 +21,7 @@ class HomeActivity: ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val homeViewModel:HomeViewModel = viewModel()
-                    HomeScreen(homeViewModel = homeViewModel)
+                    HomeScreen()
                 }
             }
         }

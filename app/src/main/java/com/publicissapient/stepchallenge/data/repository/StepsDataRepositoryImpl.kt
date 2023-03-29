@@ -3,12 +3,12 @@ package com.publicissapient.stepchallenge.data.repository
 import com.publicissapient.stepchallenge.BuildConfig
 import com.publicissapient.stepchallenge.data.source.network.apis.GoogleSheetsApiService
 import com.publicissapient.stepchallenge.data.source.network.dto.SheetsUpdateRequest
+import com.publicissapient.stepchallenge.data.source.network.mapper.toStepDataList
 import com.publicissapient.stepchallenge.domain.entity.StepData
 import com.publicissapient.stepchallenge.domain.repository.StepsDataRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.util.*
 import javax.inject.Inject
 
 
@@ -38,18 +38,13 @@ class StepsDataRepositoryImpl @Inject constructor(
         return flow<Result<List<StepData>>> {
             // ToDo: Need to update code to send and receive request.
             try {
-                //            apiService.getSheetData(
-//                spreadsheetId = sheetId,
-//                sheetRange = "A1:B1",
-//                apiKey = apiKey
-//            )
+                val steps = apiService.getSheetData(
+                    spreadsheetId = sheetId,
+                    sheetRange = "A1:B1",
+                    apiKey = apiKey
+                ).toStepDataList()
                 delay(1000)
-                val steps = listOf<StepData>(
-                    StepData(1000, Date()),
-                    StepData(1000, Date()),
-                    StepData(1000, Date())
 
-                )
                 emit(Result.success(steps))
             } catch (e: Exception) {
                 emit(Result.failure(e))

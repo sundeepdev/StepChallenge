@@ -9,6 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import com.publicissapient.stepchallenge.data.source.network.mapper.toUserList
 
 
 class UserRepositoryImpl @Inject constructor(
@@ -33,17 +34,12 @@ class UserRepositoryImpl @Inject constructor(
 
         return flow<Result<List<User>>> {
             try {
-//                apiService.getSheetData(
-//                    spreadsheetId = sheetId,
-//                    sheetRange = "A1:B1",
-//                    apiKey = apiKey
-//                )
+                val users = apiService.getSheetData(
+                    spreadsheetId = sheetId,
+                    sheetRange = "A1:B1",
+                    apiKey = apiKey
+                ).toUserList()
                 delay(1000)
-                val users = listOf(
-                    User("1", "John Doe", 25, "john.doe@example.com", false),
-                    User("2", "Jane Smith", 30, "jane.smith@example.com", true),
-                    User("3", "Bob Johnson", 35, "bob.johnson@example.com", false)
-                )
                 emit(Result.success(users))
             } catch (error: Exception) {
                 emit(Result.failure(error))

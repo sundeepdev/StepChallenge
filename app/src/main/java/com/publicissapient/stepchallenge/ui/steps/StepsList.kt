@@ -8,9 +8,10 @@ import com.publicissapient.stepchallenge.R
 import com.publicissapient.stepchallenge.ui.common.BasicListUi
 import com.publicissapient.stepchallenge.ui.common.ErrorUi
 import com.publicissapient.stepchallenge.ui.common.LoadingUi
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun StepsList(viewModel: StepsListViewModel) {
+fun StepsList(viewModel: StepsListViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     StepsList(uiState = uiState)
 }

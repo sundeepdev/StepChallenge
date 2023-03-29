@@ -20,9 +20,9 @@ import com.publicissapient.stepchallenge.R
 import com.publicissapient.stepchallenge.ui.theme.OneOnOneTheme
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel) {
+fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewModel()) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
-    var selectedTab = when(uiState) {
+    val selectedTab = when(uiState) {
         is HomeViewUiState.UserListScreen -> HomeViewTabType.USERS_LIST_TAB
         is HomeViewUiState.StepsListScreen -> HomeViewTabType.STEPS_LIST_TAB
         is HomeViewUiState.UserProfileScreen -> HomeViewTabType.PROFILE_TAB
@@ -77,8 +77,7 @@ fun DefaultPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            val homeViewModel:HomeViewModel = viewModel()
-            HomeScreen(homeViewModel = homeViewModel)
+            //HomeScreen()
         }
     }
 }

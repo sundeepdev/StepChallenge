@@ -10,9 +10,10 @@ import com.publicissapient.stepchallenge.domain.entity.User
 import com.publicissapient.stepchallenge.ui.common.BasicListUi
 import com.publicissapient.stepchallenge.ui.common.ErrorUi
 import com.publicissapient.stepchallenge.ui.common.LoadingUi
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun UserList (modifier: Modifier = Modifier, viewModel: UserListViewModel) {
+fun UserList (modifier: Modifier = Modifier, viewModel: UserListViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     UserList(modifier, uiState = uiState)
 }

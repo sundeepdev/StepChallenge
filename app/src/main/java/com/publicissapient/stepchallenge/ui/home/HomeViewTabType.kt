@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 data class HomeViewTabDataModel(val title: String, val icon: ImageVector, val route: String = title)
 
-enum class HomeViewTabType(val tabData: HomeViewTabDataModel) {
+enum class HomeViewTabType(val data: HomeViewTabDataModel) {
     USERS_LIST_TAB(HomeViewTabDataModel("Users", Icons.Default.Home)),
     STEPS_LIST_TAB(HomeViewTabDataModel("Steps", Icons.Default.ThumbUp)),
     PROFILE_TAB(HomeViewTabDataModel("Profile", Icons.Default.Person))

@@ -18,7 +18,7 @@ fun HomeScreenTabBarNavigation(
             BottomNavigationItem(
                 selected = selectedTab == tab,
                 onClick = {
-                    navController.navigate(tab.tabData.title) {
+                    navController.navigate(tab.data.route) {
                         launchSingleTop = true
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
@@ -27,8 +27,8 @@ fun HomeScreenTabBarNavigation(
                     }
                     tabClicked(tab)
                 },
-                label = { Text(tab.tabData.title) },
-                icon = { Icon(tab.tabData.icon, contentDescription = null) }
+                label = { Text(tab.data.title) },
+                icon = { Icon(tab.data.icon, contentDescription = "${tab.data.title} Tab Button") }
             )
         }
     }
