@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.publicissapient.stepchallenge'
+    namespace 'dev.sundeep.stepchallenge'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.publicissapient.stepchallenge"
+        applicationId "dev.sundeep.stepchallenge"
         minSdk 24
         targetSdk 33
         versionCode 1

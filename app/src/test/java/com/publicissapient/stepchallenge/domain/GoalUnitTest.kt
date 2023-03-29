@@ -1,1 +1,0 @@
-package com.publicissapient.stepchallenge.domain
