@@ -16,9 +16,9 @@ abstract class BaseViewModel<VS, VI, SE>: ViewModel() {
     private val _viewState = MutableStateFlow(initialViewState)
     val viewState = _viewState.asStateFlow()
 
-    private val _viewEvents = Channel<SE?>(Channel.BUFFERED)
+    private val _viewEvents = Channel<VI?>(Channel.BUFFERED)
     val viewEvents = _viewEvents.receiveAsFlow()
 
-    private val _viewActions = Channel<VI>(Channel.BUFFERED)
+    private val _viewActions = Channel<SE>(Channel.BUFFERED)
 
 }
