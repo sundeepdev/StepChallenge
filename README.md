@@ -1,6 +1,6 @@
 # StepChallenge
 
-This app is to allow users to come in a group and then create a Step Challenge between each other. 
+This app allows its users to come in a group and create a Step Challenge between each other. 
 There are two type of users. Step Challenge users and Admin users. The Admin or the person who created the challenge would be able to 
 add/invite people.
 
