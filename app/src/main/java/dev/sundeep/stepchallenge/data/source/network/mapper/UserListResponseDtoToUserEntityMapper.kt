@@ -5,12 +5,10 @@ import dev.sundeep.stepchallenge.data.source.network.dto.SheetsUpdateResponse
 import dev.sundeep.stepchallenge.domain.entity.User
 
 fun SheetsResponse.toUserList(): List<User> {
-    print(this)
     return getUserList()
 }
 
 fun SheetsUpdateResponse.toUserList(): List<User> {
-    print(this)
     return getUserList()
 }
 

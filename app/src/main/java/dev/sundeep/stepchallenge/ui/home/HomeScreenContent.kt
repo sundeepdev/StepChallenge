@@ -12,6 +12,7 @@ import dev.sundeep.stepchallenge.ui.steps.StepsList
 import dev.sundeep.stepchallenge.ui.steps.StepsListViewModel
 import dev.sundeep.stepchallenge.ui.users.UserList
 import dev.sundeep.stepchallenge.ui.users.UserListViewModel
+import android.util.Log
 
 @Composable
 fun HomeScreenContent(
@@ -32,7 +33,7 @@ fun HomeScreenContent(
                 StepsList(viewModel = viewModel)
             }
             composable(HomeViewTabType.PROFILE_TAB.data.route) {
-                println("Need to implement ui state for Profile: $uiState")
+                Log.d(this.javaClass.toString(),"Need to implement ui state for Profile: $uiState")
                 // Display the user profile
                 UserProfile()
             }

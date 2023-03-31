@@ -6,12 +6,10 @@ import dev.sundeep.stepchallenge.domain.entity.StepData
 import java.util.*
 
 fun SheetsResponse.toStepDataList(): List<StepData> {
-    print(this)
     return getStepDataList()
 }
 
 fun SheetsUpdateResponse.toStepDataList(): List<StepData> {
-    print(this)
     return getStepDataList()
 }
 
