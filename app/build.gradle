@@ -14,7 +14,7 @@ android {
         minSdk 24
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -24,8 +24,8 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "GOOGLE_SHEET_API_KEY", "\"AIzaSyCzNXG2joWiTv_O1uTu1r-Qz-LB49Va9FQ\"")
-            buildConfigField("String", "GOOGLE_SHEET_ID", "\"1dUKQOawmgX308fyKG_sbrG0gr2HvHNJMUGSFx6p6Ob0\"")
+            buildConfigField("String", "GOOGLE_SHEET_API_KEY", "\"your-api-key-here\"")
+            buildConfigField("String", "GOOGLE_SHEET_ID", "\"your-sheet-id-here\"")
         }
         release {
             minifyEnabled false

@@ -8,7 +8,6 @@ import javax.inject.Inject
 class GetStepsDataUseCase @Inject constructor(
     private val stepsDataRepository: StepsDataRepository
 ) {
-
     operator fun invoke(): Flow<Result<List<StepData>>> {
         return stepsDataRepository.getStepsData()
     }

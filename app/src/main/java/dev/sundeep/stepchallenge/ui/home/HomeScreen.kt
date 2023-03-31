@@ -48,7 +48,7 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    //OnClick Method
+                    //TODO : Implement the Add Step functionality
                 },
                 backgroundColor = MaterialTheme.colors.secondary,
                 shape = RoundedCornerShape(16.dp),
