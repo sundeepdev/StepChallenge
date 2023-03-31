@@ -9,19 +9,36 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.sundeep.stepchallenge.data.source.network.mapper.StepDataEntityToRequestMapper
+import dev.sundeep.stepchallenge.data.source.network.mapper.UserEntityToRequestDataMapper
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
+    @Provides
+    @Singleton
+    fun provideUserEntityToRequestDataMapper(): UserEntityToRequestDataMapper =
+        UserEntityToRequestDataMapper()
 
     @Provides
     @Singleton
-    fun provideUserRepository(apiService: GoogleSheetsApiService): UserRepository =
-        UserRepositoryImpl(apiService)
+    fun provideStepDataEntityToRequestMapper(): StepDataEntityToRequestMapper =
+        StepDataEntityToRequestMapper()
 
     @Provides
     @Singleton
-    fun provideStepDataRepository(apiService: GoogleSheetsApiService): StepsDataRepository =
-        StepsDataRepositoryImpl(apiService)
+    fun provideUserRepository(
+        apiService: GoogleSheetsApiService,
+        userEntityToRequestDataMapper: UserEntityToRequestDataMapper
+    ): UserRepository =
+        UserRepositoryImpl(apiService, userEntityToRequestDataMapper)
+
+    @Provides
+    @Singleton
+    fun provideStepDataRepository(
+        apiService: GoogleSheetsApiService,
+        stepDataEntityToRequestMapper: StepDataEntityToRequestMapper
+    ): StepsDataRepository =
+        StepsDataRepositoryImpl(apiService, stepDataEntityToRequestMapper)
 }

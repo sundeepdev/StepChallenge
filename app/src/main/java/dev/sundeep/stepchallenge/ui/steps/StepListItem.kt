@@ -11,10 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import dev.sundeep.stepchallenge.domain.entity.StepData
 
 @Composable
-fun StepListItem(step: StepData) {
+fun StepListItem(step: StepListUiDataModel) {
     Row(
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 16.dp)
@@ -25,11 +24,11 @@ fun StepListItem(step: StepData) {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "${step.count}",
+                text = "${step.stepCount}",
                 style = MaterialTheme.typography.h6
             )
             Text(
-                text = step.stepDataDisplayDate(),
+                text = step.onDate,
                 color = Color.DarkGray,
                 style = MaterialTheme.typography.subtitle1
             )
