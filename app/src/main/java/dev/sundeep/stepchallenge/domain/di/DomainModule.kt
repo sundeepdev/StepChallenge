@@ -1,28 +1,25 @@
 package dev.sundeep.stepchallenge.domain.di
 
-import dev.sundeep.stepchallenge.domain.repository.StepsDataRepository
-import dev.sundeep.stepchallenge.domain.repository.UserRepository
-import dev.sundeep.stepchallenge.domain.usecase.StepsUseCase
-import dev.sundeep.stepchallenge.domain.usecase.UserUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
+import dev.sundeep.stepchallenge.domain.repository.StepsDataRepository
+import dev.sundeep.stepchallenge.domain.repository.UserRepository
+import dev.sundeep.stepchallenge.domain.usecase.GetStepsDataUseCase
+import dev.sundeep.stepchallenge.domain.usecase.GetUserListUseCase
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object DomainModule {
     @Provides
-    @Singleton
-    fun provideUserUseCase(userRepository: UserRepository): UserUseCase {
-        return UserUseCase(userRepository)
+    fun provideUserUseCase(userRepository: UserRepository): GetUserListUseCase {
+        return GetUserListUseCase(userRepository)
     }
 
     @Provides
-    @Singleton
-    fun provideStepsUseCase(stepsDataRepository: StepsDataRepository): StepsUseCase {
-        return StepsUseCase(stepsDataRepository)
+    fun provideStepsUseCase(stepsDataRepository: StepsDataRepository): GetStepsDataUseCase {
+        return GetStepsDataUseCase(stepsDataRepository)
     }
 
 }

@@ -2,23 +2,16 @@ package dev.sundeep.stepchallenge.ui.users
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.sundeep.stepchallenge.domain.entity.User
-import dev.sundeep.stepchallenge.domain.usecase.UserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.sundeep.stepchallenge.domain.usecase.GetUserListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed interface UsersListUiState {
-    object Loading: UsersListUiState
-    data class Success(val users: List<User>): UsersListUiState
-    data class Error(val message: String?): UsersListUiState
-}
-
 @HiltViewModel
 class UserListViewModel @Inject constructor(
-    private val userUseCase: UserUseCase
+    private val userUseCase: GetUserListUseCase
 ): ViewModel() {
 
     init {
@@ -31,7 +24,7 @@ class UserListViewModel @Inject constructor(
 
     private fun fetchLatestUsers() {
         viewModelScope.launch {
-            userUseCase.getUsers().collect { result ->
+            userUseCase().collect { result ->
                 result.fold(
                     onSuccess = {
                         _uiState.value = UsersListUiState.Success(it)
@@ -40,7 +33,6 @@ class UserListViewModel @Inject constructor(
                         _uiState.value = UsersListUiState.Error(it.message)
                     }
                 )
-
             }
         }
     }

@@ -3,8 +3,8 @@ package dev.sundeep.stepchallenge.ui.steps
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.sundeep.stepchallenge.domain.entity.StepData
-import dev.sundeep.stepchallenge.domain.usecase.StepsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.sundeep.stepchallenge.domain.usecase.GetStepsDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ sealed interface StepsListUiState {
 
 @HiltViewModel
 class StepsListViewModel @Inject constructor(
-    private val stepsUseCase: StepsUseCase
+    private val stepsUseCase: GetStepsDataUseCase
 ): ViewModel() {
 
 //    private val steps: Flow<List<StepData>> = stepsUseCase.getStepsData("1")
@@ -43,7 +43,7 @@ class StepsListViewModel @Inject constructor(
 
     private fun fetchLatestStepsData() {
         viewModelScope.launch {
-            stepsUseCase.getStepsData().collect { result ->
+            stepsUseCase().collect { result ->
                 result.fold(
                     onSuccess = {
                         _uiState.value = StepsListUiState.Success(it)

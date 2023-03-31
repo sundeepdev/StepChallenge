@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import dev.sundeep.stepchallenge.ui.profile.UserProfile
 import dev.sundeep.stepchallenge.ui.steps.StepsList
 import dev.sundeep.stepchallenge.ui.steps.StepsListViewModel
 import dev.sundeep.stepchallenge.ui.users.UserList
@@ -33,7 +34,7 @@ fun HomeScreenContent(
             composable(HomeViewTabType.PROFILE_TAB.data.route) {
                 println("Need to implement ui state for Profile: $uiState")
                 // Display the user profile
-                //UserProfile()
+                UserProfile()
             }
         }
     }

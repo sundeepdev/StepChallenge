@@ -6,9 +6,11 @@ import dev.sundeep.stepchallenge.data.source.network.dto.SheetsUpdateRequest
 import dev.sundeep.stepchallenge.data.source.network.mapper.toStepDataList
 import dev.sundeep.stepchallenge.domain.entity.StepData
 import dev.sundeep.stepchallenge.domain.repository.StepsDataRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 
@@ -28,10 +30,10 @@ class StepsDataRepositoryImpl @Inject constructor(
                 data = SheetsUpdateRequest(range = sheetRange, values = listOf(listOf(stepData.count.toString(), stepData.stepDataDisplayDate())))
             )
             emit(response.updatedRows > 0)
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
-    override fun getStepsData(forUserWithId: String): Flow<Result<List<StepData>>> {
+    override fun getStepsData(): Flow<Result<List<StepData>>> {
         val apiKey: String = BuildConfig.GOOGLE_SHEET_API_KEY
         val sheetId: String = BuildConfig.GOOGLE_SHEET_ID
 
@@ -48,7 +50,6 @@ class StepsDataRepositoryImpl @Inject constructor(
             } catch (e: Exception) {
                 emit(Result.failure(e))
             }
-
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }

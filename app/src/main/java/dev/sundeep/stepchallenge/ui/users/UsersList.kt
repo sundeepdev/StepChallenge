@@ -30,6 +30,5 @@ fun UserList (modifier: Modifier = Modifier, uiState: UsersListUiState) {
             modifier = modifier,
             message = uiState.message ?: stringResource(id = R.string.default_error_message_with_retry))
     }
-
 }
 

@@ -2,23 +2,31 @@ package dev.sundeep.stepchallenge.ui.common
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 
-abstract class BaseViewModel<VS, VI, SE>: ViewModel() {
+interface UiState
 
-    protected abstract val initialViewState: VS
-    protected abstract fun processAction(action: VI)
+interface UiEvent
 
-    protected var lastViewState: VS = initialViewState
+interface UiEffect
 
-    private val _viewState = MutableStateFlow(initialViewState)
-    val viewState = _viewState.asStateFlow()
+abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect> : ViewModel() {
 
-    private val _viewEvents = Channel<VI?>(Channel.BUFFERED)
-    val viewEvents = _viewEvents.receiveAsFlow()
+    // Create Initial State of View
+    private val initialState : State by lazy { createInitialState() }
+    abstract fun createInitialState() : State
 
-    private val _viewActions = Channel<SE>(Channel.BUFFERED)
+    // Get Current State
+    val currentState: State
+        get() = uiState.value
+
+    private val _uiState : MutableStateFlow<State> = MutableStateFlow(initialState)
+    val uiState = _uiState.asStateFlow()
+
+    private val _event : MutableSharedFlow<Event> = MutableSharedFlow()
+    val event = _event.asSharedFlow()
+
+    private val _effect : Channel<Effect> = Channel()
+    val effect = _effect.receiveAsFlow()
 
 }

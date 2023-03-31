@@ -73,8 +73,8 @@ dependencies {
     // Dependencies for Unit Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    // Mockito for mocking objects
-    testImplementation 'org.mockito:mockito-core:3.12.4'
+    // Mockk for mocking objects
+    testImplementation 'io.mockk:mockk:1.12.0'
     // Mockito-Kotlin for better Kotlin support
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
 

@@ -10,23 +10,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import dev.sundeep.stepchallenge.data.source.network.mapper.toUserList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 
 
 class UserRepositoryImpl @Inject constructor(
     private val apiService: GoogleSheetsApiService
 ) : UserRepository {
 
-    override fun addUser(user: User): Flow<Boolean> {
-        return postUser(user)
-    }
+    override fun addUser(user: User): Flow<Boolean> = postUser(user)
 
-    override fun updateUser(id: String, updatedUser: User): Flow<Boolean> {
-        return putUser(user = updatedUser)
-    }
+    override fun updateUser(id: String, updatedUser: User): Flow<Boolean>
+        = putUser(user = updatedUser)
 
-    override fun getUsers(): Flow<Result<List<User>>> {
-        return fetchUsers()
-    }
+    override fun getUsers(): Flow<Result<List<User>>> = fetchUsers()
 
     private fun fetchUsers(): Flow<Result<List<User>>> {
         val apiKey: String = BuildConfig.GOOGLE_SHEET_API_KEY
@@ -44,7 +41,7 @@ class UserRepositoryImpl @Inject constructor(
             } catch (error: Exception) {
                 emit(Result.failure(error))
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     private fun postUser(user: User): Flow<Boolean> {
@@ -59,7 +56,7 @@ class UserRepositoryImpl @Inject constructor(
                 data = SheetsUpdateRequest(range = sheetRange, values = listOf(listOf(user.id, user.name, user.email, user.age.toString())))
             )
             emit(response.updatedRows > 0)
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     private fun putUser(user: User): Flow<Boolean> {
@@ -74,6 +71,6 @@ class UserRepositoryImpl @Inject constructor(
                 data = SheetsUpdateRequest(range = sheetRange, values = listOf(listOf(user.id, user.name, user.email, user.age.toString())))
             )
             emit(response.updatedRows > 0)
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }
