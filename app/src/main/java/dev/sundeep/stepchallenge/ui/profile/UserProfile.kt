@@ -34,15 +34,6 @@ fun UserProfile() {
                 .size(100.dp)
         )
 
-//        Image(
-//            painter = imageResource,
-//            contentDescription = "Profile Image",
-//            modifier = Modifier
-//                .size(100.dp)
-//                .clip(CircleShape),
-//            contentScale = ContentScale.Crop
-//        )
-
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
