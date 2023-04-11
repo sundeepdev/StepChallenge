@@ -28,7 +28,7 @@ fun HomeScreenTabBarNavigation(
                     tabClicked(tab)
                 },
                 label = { Text(tab.data.title) },
-                icon = { Icon(tab.data.icon, contentDescription = "${tab.data.title} Tab Button") }
+                icon = { Icon(tab.data.icon, contentDescription = "") }
             )
         }
     }

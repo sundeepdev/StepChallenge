@@ -24,8 +24,8 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "GOOGLE_SHEET_API_KEY", "\"your-api-key-here\"")
-            buildConfigField("String", "GOOGLE_SHEET_ID", "\"your-sheet-id-here\"")
+            buildConfigField("String", "GOOGLE_SHEET_API_KEY", "\"AIzaSyCzNXG2joWiTv_O1uTu1r-Qz-LB49Va9FQ\"")
+            buildConfigField("String", "GOOGLE_SHEET_ID", "\"1dUKQOawmgX308fyKG_sbrG0gr2HvHNJMUGSFx6p6Ob0\"")
         }
         release {
             minifyEnabled false
@@ -89,8 +89,9 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
-    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.38.1'
-    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.38.1'
+
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.44'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.44'
 }
 
 // Allow references to generated code

@@ -17,7 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import dev.sundeep.stepchallenge.R
-import dev.sundeep.stepchallenge.ui.theme.OneOnOneTheme
+import dev.sundeep.stepchallenge.ui.theme.StepChallengeTheme
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewModel()) {
@@ -72,12 +72,16 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    OneOnOneTheme {
+    StepChallengeTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            //HomeScreen()
+            HomeScreen(
+                uiState = HomeViewUiState.UserProfileScreen,
+                selectedTab = HomeViewTabType.PROFILE_TAB,
+                tabClicked = {}
+            )
         }
     }
 }
