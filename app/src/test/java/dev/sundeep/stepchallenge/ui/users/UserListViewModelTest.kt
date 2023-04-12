@@ -67,11 +67,13 @@ class UserListViewModelTest {
         coVerify { getUserListUseCase() }
     }
 
-    private fun getUserList(): List<User> {
-        return listOf(
-            User("1", "John Doe", 25, "john.doe@example.com", false),
-            User("2", "Jane Smith", 30, "jane.smith@example.com", true),
-            User("3", "Bob Johnson", 35, "bob.johnson@example.com", false)
-        )
+    companion object {
+        private fun getUserList(): List<User> {
+            return listOf(
+                User("1", "John Doe", 25, "john.doe@example.com", false),
+                User("2", "Jane Smith", 30, "jane.smith@example.com", true),
+                User("3", "Bob Johnson", 35, "bob.johnson@example.com", false)
+            )
+        }
     }
 }
