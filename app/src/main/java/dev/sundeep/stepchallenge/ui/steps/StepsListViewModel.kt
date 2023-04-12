@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.sundeep.stepchallenge.domain.usecase.GetStepsDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class StepsListViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<StepsListUiState>(StepsListUiState.Loading)
     val uiState: StateFlow<StepsListUiState>
-        get() = _uiState
+        get() = _uiState.asStateFlow()
 
     private fun fetchLatestStepsData() {
         viewModelScope.launch {

@@ -7,6 +7,7 @@ import dev.sundeep.stepchallenge.data.source.network.mapper.UserEntityToRequestD
 import dev.sundeep.stepchallenge.data.source.network.mapper.toUserList
 import dev.sundeep.stepchallenge.domain.entity.User
 import dev.sundeep.stepchallenge.domain.repository.UserRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val apiService: GoogleSheetsApiService,
-    private val userEntityToRequestDataMapper: UserEntityToRequestDataMapper
+    private val userEntityToRequestDataMapper: UserEntityToRequestDataMapper,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : UserRepository {
 
     override fun addUser(user: User): Flow<Boolean> = postUser(user)
@@ -40,7 +42,7 @@ class UserRepositoryImpl @Inject constructor(
             } catch (error: Exception) {
                 emit(Result.failure(error))
             }
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(dispatcher)
     }
 
     private fun postUser(user: User): Flow<Boolean> {
@@ -55,7 +57,7 @@ class UserRepositoryImpl @Inject constructor(
                 data = SheetsUpdateRequest(range = sheetRange, values = listOf(userEntityToRequestDataMapper(user)))
             )
             emit(response.updatedRows > 0)
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(dispatcher)
     }
 
     private fun putUser(user: User): Flow<Boolean> {
@@ -70,6 +72,6 @@ class UserRepositoryImpl @Inject constructor(
                 data = SheetsUpdateRequest(range = sheetRange, values = listOf(userEntityToRequestDataMapper(user)))
             )
             emit(response.updatedRows > 0)
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(dispatcher)
     }
 }

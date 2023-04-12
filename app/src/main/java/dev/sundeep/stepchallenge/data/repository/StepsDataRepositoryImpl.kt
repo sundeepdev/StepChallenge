@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 class StepsDataRepositoryImpl @Inject constructor(
     private val apiService: GoogleSheetsApiService,
-    private val stepDataEntityToRequestMapper: StepDataEntityToRequestMapper
+    private val stepDataEntityToRequestMapper: StepDataEntityToRequestMapper,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : StepsDataRepository {
 
     private fun postSteps(stepData: StepData): Flow<Boolean> {
@@ -31,7 +32,7 @@ class StepsDataRepositoryImpl @Inject constructor(
                 data = SheetsUpdateRequest(range = sheetRange, values = listOf(stepDataEntityToRequestMapper(stepData)))
             )
             emit(response.updatedRows > 0)
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(dispatcher)
     }
 
     override fun getStepsData(): Flow<Result<List<StepData>>> {
@@ -49,6 +50,6 @@ class StepsDataRepositoryImpl @Inject constructor(
             } catch (e: Exception) {
                 emit(Result.failure(e))
             }
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(dispatcher)
     }
 }
