@@ -2,6 +2,7 @@ package dev.sundeep.stepchallenge.domain
 
 import dev.sundeep.stepchallenge.domain.repository.UserRepository
 import dev.sundeep.stepchallenge.domain.usecase.GetUserListUseCase
+import dev.sundeep.stepchallenge.util.BaseCoroutineTests
 import dev.sundeep.stepchallenge.util.getUserList
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -14,28 +15,26 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class GetUserListUseCaseTest {
+class GetUserListUseCaseTest:BaseCoroutineTests() {
 
     private lateinit var useCase: GetUserListUseCase
-    private lateinit var userRepository: UserRepository
+    private val userRepository: UserRepository = mockk()
 
     @Before
     fun setUp() {
-        userRepository = mockk()
+        useCase = GetUserListUseCase(userRepository)
     }
 
     @Test
-    fun `test fetchLatestUsers success`() {
-        val users = getUserList()
-        coEvery { userRepository.getUsers() } returns flowOf(Result.success(users))
+    fun `GIVEN user repository WHEN GetUserListUseCase is invoked THEN the getUsers function is called`()
+        = runTest(coroutinesTestRule.dispatcher) {
+            val users = getUserList()
+            coEvery { userRepository.getUsers() } returns flowOf(Result.success(users))
 
-        useCase = GetUserListUseCase(userRepository)
-        runTest {
             useCase()
+
+            coVerify { userRepository.getUsers() }
+
+            confirmVerified( userRepository )
         }
-
-        coVerify { userRepository.getUsers() }
-
-        confirmVerified( userRepository )
-    }
 }

@@ -3,7 +3,6 @@ package dev.sundeep.stepchallenge.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,9 +17,7 @@ sealed interface HomeViewUiState {
 }
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val dispatcher: CoroutineDispatcher
-) : ViewModel() {
+class HomeViewModel @Inject constructor(): ViewModel() {
     private val _uiState = MutableStateFlow<HomeViewUiState> (HomeViewUiState.UserListScreen)
     val uiState: StateFlow<HomeViewUiState> = _uiState.asStateFlow()
 
@@ -33,19 +30,19 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun showUserListScreen() {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             _uiState.emit(HomeViewUiState.UserListScreen)
         }
     }
 
     private fun showStepsListScreen() {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             _uiState.emit(HomeViewUiState.StepsListScreen)
         }
     }
 
     private fun showUserProfileScreen() {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             _uiState.emit(HomeViewUiState.UserProfileScreen)
         }
     }

@@ -2,6 +2,7 @@ package dev.sundeep.stepchallenge.domain
 
 import dev.sundeep.stepchallenge.domain.repository.StepsDataRepository
 import dev.sundeep.stepchallenge.domain.usecase.GetStepsDataUseCase
+import dev.sundeep.stepchallenge.util.BaseCoroutineTests
 import dev.sundeep.stepchallenge.util.getStepsDataList
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -14,28 +15,26 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class GetStepsDataUseCaseTest {
-
+class GetStepsDataUseCaseTest: BaseCoroutineTests() {
     private lateinit var useCase: GetStepsDataUseCase
-    private lateinit var stepsDataRepository: StepsDataRepository
+    private val stepsDataRepository: StepsDataRepository = mockk()
 
     @Before
     fun setUp() {
-        stepsDataRepository = mockk()
+        useCase = GetStepsDataUseCase(stepsDataRepository)
     }
 
     @Test
-    fun `test GetStepsDataUseCase`() {
-        val users = getStepsDataList()
-        coEvery { stepsDataRepository.getStepsData() } returns flowOf(Result.success(users))
+    fun `GIVEN step data repository WHEN GetStepDataUseCase is invoked THEN the list of StepsData is returned in case of success`()
+        = runTest(coroutinesTestRule.dispatcher) {
 
-        useCase = GetStepsDataUseCase(stepsDataRepository)
-        runTest {
+            val stepsDataList = getStepsDataList()
+            coEvery { stepsDataRepository.getStepsData() } returns flowOf(Result.success(stepsDataList))
+
             useCase()
+
+            coVerify { stepsDataRepository.getStepsData() }
+
+            confirmVerified( stepsDataRepository )
         }
-
-        coVerify { stepsDataRepository.getStepsData() }
-
-        confirmVerified( stepsDataRepository )
-    }
 }
