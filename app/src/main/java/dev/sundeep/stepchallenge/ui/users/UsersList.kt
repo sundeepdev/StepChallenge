@@ -15,6 +15,7 @@ import dev.sundeep.stepchallenge.ui.common.view.LoadingUi
 fun UserList (modifier: Modifier = Modifier, viewModel: UserListViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     UserList(modifier, uiState = uiState)
+    viewModel.onViewReady()
 }
 
 @Composable

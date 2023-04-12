@@ -1,18 +1,15 @@
 package dev.sundeep.stepchallenge.ui.steps
 
-import androidx.lifecycle.viewModelScope
 import dev.sundeep.stepchallenge.domain.usecase.GetStepsDataUseCase
 import dev.sundeep.stepchallenge.util.getStepsDataList
+import dev.sundeep.stepchallenge.util.test
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
@@ -25,53 +22,48 @@ class StepsListViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
 
     private lateinit var viewModel: StepsListViewModel
-    private lateinit var getStepsDataUseCase: GetStepsDataUseCase
+    private var getStepsDataUseCase: GetStepsDataUseCase = mockk()
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        getStepsDataUseCase = mockk()
     }
 
     @Test
-    fun `test GetStepsDataUseCase success`() = runTest {
+    fun `GIVEN api is working WHEN view is ready THEN StepsListUiState is Success`() = runTest {
         val st = getStepsDataList()
         coEvery { getStepsDataUseCase() } returns flowOf(Result.success(st))
 
         viewModel = StepsListViewModel(getStepsDataUseCase)
 
-        var uiState = viewModel.uiState.value
-        assert(uiState is StepsListUiState.Loading)
+        viewModel.uiState.test { results ->
+            viewModel.onViewReady()
 
-        viewModel.viewModelScope.launch {
-            viewModel.uiState.collectLatest {
-                uiState = it
-            }
+            advanceUntilIdle()
+            assertEquals(results.size, 2)
+            assert(results[0] is StepsListUiState.Loading)
+            assert(results[1] is StepsListUiState.Success)
+            assertEquals((results[1] as StepsListUiState.Success).steps.size, 3)
         }
-        delay(100)
 
-        assert(uiState is StepsListUiState.Success)
-        assertEquals((uiState as StepsListUiState.Success).steps.size, 3)
         coVerify { getStepsDataUseCase() }
     }
 
     @Test
-    fun `test GetStepsDataUseCase failure`() = runTest {
+    fun `GIVEN api is not working WHEN view is ready THEN StepsListUiState is Error`() = runTest {
         coEvery { getStepsDataUseCase() } returns flowOf(Result.failure(Throwable("Failure Test")))
 
         viewModel = StepsListViewModel(getStepsDataUseCase)
 
-        var uiState = viewModel.uiState.value
-        assert(uiState is StepsListUiState.Loading)
+        viewModel.uiState.test { results ->
+            viewModel.onViewReady()
 
-        viewModel.viewModelScope.launch {
-            viewModel.uiState.collectLatest {
-                uiState = it
-            }
+            advanceUntilIdle()
+            assertEquals(results.size, 2)
+            assert(results[0] is StepsListUiState.Loading)
+            assert(results[1] is StepsListUiState.Error)
         }
-        delay(100)
 
-        assert(uiState is StepsListUiState.Error)
         coVerify { getStepsDataUseCase() }
     }
 }

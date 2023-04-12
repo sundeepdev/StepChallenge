@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun StepsList(viewModel: StepsListViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     StepsList(uiState = uiState)
+    viewModel.onViewReady()
 }
 
 @Composable

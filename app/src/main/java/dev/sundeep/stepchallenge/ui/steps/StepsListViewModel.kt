@@ -14,13 +14,14 @@ import javax.inject.Inject
 class StepsListViewModel @Inject constructor(
     private val stepsUseCase: GetStepsDataUseCase
 ): ViewModel() {
-    init {
-        fetchLatestStepsData()
-    }
-
+    
     private val _uiState = MutableStateFlow<StepsListUiState>(StepsListUiState.Loading)
     val uiState: StateFlow<StepsListUiState>
         get() = _uiState.asStateFlow()
+
+    fun onViewReady() {
+        fetchLatestStepsData()
+    }
 
     private fun fetchLatestStepsData() {
         viewModelScope.launch {

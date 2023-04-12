@@ -16,13 +16,13 @@ class UserListViewModel @Inject constructor(
     private val userUseCase: GetUserListUseCase,
 ): ViewModel() {
 
-    init {
-        fetchLatestUsers()
-    }
-
     private val _uiState = MutableStateFlow<UsersListUiState>(UsersListUiState.Loading)
     val uiState: StateFlow<UsersListUiState>
         get() = _uiState.asStateFlow()
+
+    fun onViewReady() {
+        fetchLatestUsers()
+    }
 
     private fun fetchLatestUsers() {
         viewModelScope.launch {

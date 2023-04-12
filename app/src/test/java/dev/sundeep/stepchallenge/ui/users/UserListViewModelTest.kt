@@ -1,18 +1,16 @@
 package dev.sundeep.stepchallenge.ui.users
 
-import androidx.lifecycle.viewModelScope
 import dev.sundeep.stepchallenge.domain.entity.User
 import dev.sundeep.stepchallenge.domain.usecase.GetUserListUseCase
+import dev.sundeep.stepchallenge.util.test
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
@@ -34,44 +32,38 @@ class UserListViewModelTest {
     }
 
     @Test
-    fun `test fetchLatestUsers success`() = runTest {
+    fun `GIVEN api is working WHEN view is ready THEN UsersListUiState is Success`() = runTest {
         val users = getUserList()
         coEvery { getUserListUseCase() } returns flowOf(Result.success(users))
 
         viewModel = UserListViewModel(getUserListUseCase)
 
-        var uiState = viewModel.uiState.value
-        assert(uiState is UsersListUiState.Loading)
+        viewModel.uiState.test {
+            viewModel.onViewReady()
 
-        viewModel.viewModelScope.launch {
-            viewModel.uiState.collectLatest {
-                uiState = it
-            }
+            advanceUntilIdle()
+            assert(it[0] is UsersListUiState.Loading)
+            assert(it[1] is UsersListUiState.Success)
+            assertEquals((it[1] as UsersListUiState.Success).users.size, 3)
         }
-        delay(100)
 
-        assert(uiState is UsersListUiState.Success)
-        assertEquals((uiState as UsersListUiState.Success).users.size, 3)
         coVerify { getUserListUseCase() }
     }
 
     @Test
-    fun `test fetchLatestUsers failure`() = runTest {
+    fun `GIVEN api is not working WHEN view is ready THEN UsersListUiState is Error`() = runTest {
         coEvery { getUserListUseCase() } returns flowOf(Result.failure(Throwable("Failure Test")))
 
         viewModel = UserListViewModel(getUserListUseCase)
 
-        var uiState = viewModel.uiState.value
-        assert(uiState is UsersListUiState.Loading)
+        viewModel.uiState.test {
+            viewModel.onViewReady()
 
-        viewModel.viewModelScope.launch {
-            viewModel.uiState.collectLatest {
-                uiState = it
-            }
+            advanceUntilIdle()
+            assert(it[0] is UsersListUiState.Loading)
+            assert(it[1] is UsersListUiState.Error)
         }
-        delay(100)
 
-        assert(uiState is UsersListUiState.Error)
         coVerify { getUserListUseCase() }
     }
 
